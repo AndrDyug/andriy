@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+<link rel="stylesheet" type="text/css" href="absolute.css">
+</head>
+<body onload="setInterval(rotate,5000);">
+	
+<div class="box violet one" id="one"><p>vsbdlhkjxz</p></div>
+<div class="box green two" id="two"><p id="two">Right part</p></div>
+<div class="box orange three" id="three"><p id="three">Left part (can be as a navigation menu)</p></div>
+<div class="box orange four" id="four"><p id="four">lorem ipsum text...</p></div>
+<div class="box white five" id="five">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+<div class="box violet six" id="six">dtcfh<input type="text" name="input" id="input" onchange="sorting()"><button onclick="setTimeout(italic, 5000);" onclick=""></button><input type="text" id="username" /><input type="text" id="repositoryName" /> <input type="button" id="findCommits" value="find" onclick="getCommits()"></div>
+<div class="box white x" id="x">Position:</div>
+<div class="box white y" id="y"><p>Copyright</p></div>
+</body>
+<script type="text/javascript">
+
+/*function rotate(){
+	for(let i = 0; i<7; i++){
+	document.getElementById('one').innerHTML = document.getElementById('two').textContent;
+	document.getElementById('two').innerHTML = document.getElementById('three').textContent;
+	document.getElementById('three').innerHTML = document.getElementById('four').textContent;
+	document.getElementById('four').innerHTML = document.getElementById('five').textContent;
+	document.getElementById('five').innerHTML = document.getElementById('six').textContent;
+	document.getElementById('six').innerHTML = document.getElementById('one').textContent;
+	}
+}*/
+
+function italic(){
+	document.getElementById('one').style.fontStyle = 'italic';
+	document.getElementById('six').style.fontStyle = 'italic';
+}
+
+function getCommits() {
+
+ let userName = document.getElementById('username').value;
+ let reposName = document.getElementById('repositoryName').value;
+ var request = new XMLHttpRequest();
+
+ let statusHTML = '';
+ request.open('GET', `https://api.github.com/repos/${userName}/${reposName}/commits`, true);
+
+ request.onload = function () {
+  let data = JSON.parse(this.response);
+  try {
+   $.each(data, function (i, status) {
+    console.log(i);
+    statusHTML += '<td>' + status.commit.author.login + '</td>';
+    statusHTML += '<td>' + status.commit.message + '</td>';
+   });
+   $('#tbody1').html(statusHTML);
+  } catch (e) {
+   $('#tbody1').html('Error, cannot find user/repository');
+  }
+ }
+ request.send();
+
+}
+
+function loadScript(callback1, callback2) {
+ console.log('hello');
+ callback1();
+ callback2();
+}
+
+loadScript(() => {
+ console.log('world');
+}, () => {
+ console.log('!');
+}
+);
+	
+function sorting(){
+	let regExp = /[-]{0,1}[\d]*[.]{0,1}[\d]+/g;
+	let nums = document.getElementById('input').value;
+	let temp = nums.match(regExp);
+	var res = temp.map(function(x){
+		return parseInt(x, 10);
+	});
+	alert(insertionSort(res));
+}
+
+function insertionSort(inputArr) {
+    let n = inputArr.length;
+        for (let i = 1; i < n; i++) {
+            // Choosing the first element in our unsorted subarray
+            let current = inputArr[i];
+            // The last element of our sorted subarray
+            let j = i-1; 
+            while ((j > -1) && (current < inputArr[j])) {
+                inputArr[j+1] = inputArr[j];
+                j--;
+            }
+            inputArr[j+1] = current;
+        }
+    return inputArr;
+}
+
+
+</script>
+</html>
